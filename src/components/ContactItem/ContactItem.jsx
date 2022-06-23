@@ -1,12 +1,9 @@
-import { useDispatch } from 'react-redux';
-import { removeContacts } from 'redux/contacts/slice';
-import { useDeleteContactMutation } from 'redux/contacts';
+import { useDeleteContactMutation } from 'redux/contacts/contactsApi';
 import PropTypes from 'prop-types';
 import s from './ContactItem.module.css';
 
 export default function ContactItem({ id, name, number }) {
-  const dispatch = useDispatch();
-  const [deleteContact] = useDeleteContactMutation();
+  const [deleteContact, { isLoading: isDeleting }] = useDeleteContactMutation();
 
   return (
     <>
@@ -17,9 +14,10 @@ export default function ContactItem({ id, name, number }) {
         className={s.button}
         type="submit"
         name={name}
+        disabled={isDeleting}
         onClick={() => deleteContact(id)}
       >
-        Delete
+        {isDeleting ? 'Deleting...' : 'Delete'}
       </button>
     </>
   );
